@@ -1,0 +1,6 @@
+vsphere_server = "192.168.1.98"
+vsphere_user = "administrator@vsphere.local"
+vsphere_password = "BallSalmonGrape1831!"
+datacenter = "Datacenter"
+datastore = "datastore1"
+network_name = "VM Network"

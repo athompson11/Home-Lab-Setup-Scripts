@@ -1,0 +1,3 @@
+vsphere_username = "username"
+vsphere_password = "password"
+vsphere_server   = "serveraddress"
