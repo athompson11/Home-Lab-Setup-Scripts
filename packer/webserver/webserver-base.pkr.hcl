@@ -73,7 +73,7 @@ build {
   destination = "/tmp/01-netcfg.yaml"
   }
   provisioner "shell" {
-    "inline": [
+    inline = [
       "sudo cp /tmp/01-netcfg.yaml /etc/netplan/",
       "sudo netplan apply"
     ]
