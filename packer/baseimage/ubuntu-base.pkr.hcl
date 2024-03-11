@@ -68,7 +68,7 @@ build {
     "source.vsphere-iso.this"
   ]
   provisioner "file" {
-  source = "../files/01-netcfg.yaml",
+  source = "../files/01-netcfg.yaml"
   destination = "/etc/netplan/01-netcfg.yaml"
   }
 
