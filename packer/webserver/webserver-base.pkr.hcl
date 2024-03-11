@@ -68,11 +68,16 @@ build {
     "source.vsphere-iso.this"
   ]
   
-   provisioner "file" {
+  provisioner "file" {
   source = "../files/01-netcfg.yaml"
-  destination = "/etc/netplan/01-netcfg.yaml"
+  destination = "/tmp/01-netcfg.yaml"
   }
-
+  provisioner "shell" {
+    "inline": [
+      "sudo cp /tmp/01-netcfg.yaml /etc/netplan/",
+      "sudo netplan apply"
+    ]
+  }
   provisioner "shell-local" {
     inline = ["echo the address is: $PACKER_HTTP_ADDR and build name is: $PACKER_BUILD_NAME"]
   }
