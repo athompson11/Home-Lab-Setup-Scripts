@@ -33,7 +33,7 @@ module "dns" {
   source = "./modules/dns"
   vm_name = "dns_server"
   vm_cpu = 4
-  vm_memory = 2048
+  vm_memory = 4096
   guest_id = "ubuntu64Guest"
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
