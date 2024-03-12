@@ -25,6 +25,9 @@ resource "vsphere_virtual_machine" "artifactory_server" {
         host_name = "artifactory"
         domain    = "artifactory.homelab.dev"
       }
+      network_interface {
+        #Intentionally left blank, required for DHCP
+      }
     }
   }
 }

@@ -25,6 +25,9 @@ resource "vsphere_virtual_machine" "proxy_server" {
         host_name = "proxyserver"
         domain    = "proxy.homelab.dev"
       }
+      network_interface {
+        #Intentionally left blank, required for DHCP
+      }
     }
   }
 }

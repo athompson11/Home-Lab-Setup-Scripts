@@ -25,6 +25,9 @@ resource "vsphere_virtual_machine" "concourse_server" {
         host_name = "concourse"
         domain    = "concourse.homelab.dev"
       }
+      network_interface {
+        #Intentionally left blank, required for DHCP
+      }
     }
   }
 }

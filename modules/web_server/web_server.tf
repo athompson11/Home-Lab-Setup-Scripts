@@ -25,6 +25,9 @@ resource "vsphere_virtual_machine" "web_server" {
         host_name = var.host_name
         domain    = var.domain_name
       }
+      network_interface {
+        #Intentionally left blank, required for DHCP
+      }
     }
   }
 }

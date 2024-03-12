@@ -24,6 +24,9 @@ resource "vsphere_virtual_machine" "dns_server" {
         host_name = "homedns"
         domain    = "dns.homelab.dev"
       }
+      network_interface {
+        #Intentionally left blank, required for DHCP
+      }
     }
   }
 }
