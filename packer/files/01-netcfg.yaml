@@ -1,6 +1,5 @@
 network:
-  version: 2
-  renderer: networkd
   ethernets:
-    ens192:
-      dhcp4: true
+    match: *
+    dhcp4: true
+  version: 2
