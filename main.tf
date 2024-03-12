@@ -23,9 +23,19 @@ data "vsphere_network" "network" {
   name          = var.network_name
   datacenter_id = data.vsphere_datacenter.datacenter.id
 }
-
-resource "random_id" "dns_mac" {
-  byte_length = 6
+resource "macaddress" "dns_address" {
+}
+resource "macaddress" "concourse_address" {
+}
+resource "macaddress" "zabbix_address" {
+}
+resource "macaddress" "apt_address" {
+}
+resource "macaddress" "security_address" {
+}
+resource "macaddress" "proxy_address" {
+}
+resource "macaddress" "portfolio_address" {
 }
 module "dns" {
   source = "./modules/dns"
@@ -33,7 +43,7 @@ module "dns" {
   vm_cpu = 4
   vm_memory = 4096
   guest_id = "ubuntu64Guest"
-  mac_address  = "00:00:${random_id.dns_mac.hex}"
+  mac_address  = macaddress.dns_address.address
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
@@ -46,7 +56,7 @@ module "concourse" {
   vm_cpu = 8
   vm_memory = 8192
   guest_id = "ubuntu64Guest"
-  mac_address  = "00:00:${random_id.dns_mac.hex}"
+  mac_address  = macaddress.concourse_address.address
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
@@ -59,7 +69,7 @@ module "zabbix" {
   vm_cpu = 4
   vm_memory = 4096
   guest_id = "ubuntu64Guest"
-  mac_address  = "00:00:${random_id.dns_mac.hex}"
+  mac_address  = macaddress.zabbix_address.address
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
@@ -72,7 +82,7 @@ module "apt_server" {
   vm_cpu = 4
   vm_memory = 4096
   guest_id = "ubuntu64Guest"
-  mac_address  = "00:00:${random_id.dns_mac.hex}"
+  mac_address  = macaddress.apt_address.address
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
@@ -86,7 +96,7 @@ module "security_server" {
   vm_cpu = 4
   vm_memory = 4096
   guest_id = "ubuntu64Guest"
-  mac_address  = "00:00:${random_id.dns_mac.hex}"
+  mac_address  = macaddress.security_address.address
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
@@ -100,7 +110,7 @@ module "proxy" {
   vm_cpu = 4
   vm_memory = 2048
   guest_id = "ubuntu64Guest"
-  mac_address  = "00:00:${random_id.dns_mac.hex}"
+  mac_address  = macaddress.proxy_address.address
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
@@ -114,7 +124,7 @@ module "portfolio" {
   vm_cpu = 2
   vm_memory = 2048
   guest_id = "ubuntu64Guest"
-  mac_address  = "00:00:${random_id.dns_mac.hex}"
+  mac_address  = macaddress.portfolio_address.address
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
