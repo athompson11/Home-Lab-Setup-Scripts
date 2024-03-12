@@ -1,4 +1,3 @@
-# modules/web_server/variables.tf
 variable "vm_name" {
   description = "The name of the virtual machine"
   type        = string

@@ -41,3 +41,16 @@ module "dns" {
   network_id = data.vsphere_network.network.id
   template_name = "ubuntu-base-image"
 }
+
+module "concourse" {
+  source = "./modules/concourse_ci"
+  vm_name = "concourse_host"
+  vm_cpu = 8
+  vm_memory = 8192
+  guest_id = "ubuntu64Guest"
+  datacenter_id = data.vsphere_datacenter.datacenter.id
+  datastore_id = data.vsphere_datastore.datastore.id
+  resource_pool_id = data.vsphere_resource_pool.pool.id
+  network_id = data.vsphere_network.network.id
+  template_name = "ubuntu-base-image"
+}
