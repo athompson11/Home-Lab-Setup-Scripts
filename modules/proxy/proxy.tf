@@ -20,8 +20,15 @@ resource "vsphere_virtual_machine" "proxy_server" {
 
   clone {
     template_uuid = data.vsphere_virtual_machine.template.id
+    customize{
+    linux_options {
+        host_name = "proxyserver"
+        domain    = "proxy.homelab.dev"
+      }
+    }
   }
 }
+
 
 data "vsphere_virtual_machine" "template" {
   name          = var.template_name

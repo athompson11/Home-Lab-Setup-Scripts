@@ -19,6 +19,12 @@ resource "vsphere_virtual_machine" "dns_server" {
 
   clone {
     template_uuid = data.vsphere_virtual_machine.template.id
+    customize{
+    linux_options {
+        host_name = "homedns"
+        domain    = "dns.homelab.dev"
+      }
+    }
   }
 }
 

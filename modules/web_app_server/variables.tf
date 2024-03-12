@@ -47,3 +47,11 @@ variable "mac_address"{
   description = "The VM's Mac Address"
   type = string
 }
+
+variable "host_name" {
+  description = "The Database Hostname"
+  type = string  
+}
+variable domain_name {
+  description = "The database domain name"
+}

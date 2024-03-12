@@ -78,6 +78,8 @@ module "zabbix" {
   vm_cpu = 4
   vm_memory = 4096
   guest_id = "ubuntu64Guest"
+  host_name = "zabbix"
+  domain_name = "zabbix.homelab.dev"
   mac_address  = macaddress.zabbix_address.address
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
@@ -133,6 +135,8 @@ module "portfolio" {
   vm_cpu = 2
   vm_memory = 2048
   guest_id = "ubuntu64Guest"
+  host_name = "resumewebserver"
+  domain_name = "resume.homelab.dev"
   mac_address  = macaddress.portfolio_address.address
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id

@@ -20,6 +20,12 @@ resource "vsphere_virtual_machine" "concourse_server" {
 
   clone {
     template_uuid = data.vsphere_virtual_machine.template.id
+    customize{
+    linux_options {
+        host_name = "concourse"
+        domain    = "concourse.homelab.dev"
+      }
+    }
   }
 }
 

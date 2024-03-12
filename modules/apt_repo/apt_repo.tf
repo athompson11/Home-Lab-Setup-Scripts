@@ -20,6 +20,12 @@ resource "vsphere_virtual_machine" "artifactory_server" {
 
   clone {
     template_uuid = data.vsphere_virtual_machine.template.id
+    customize{
+    linux_options {
+        host_name = "artifactory"
+        domain    = "artifactory.homelab.dev"
+      }
+    }
   }
 }
 

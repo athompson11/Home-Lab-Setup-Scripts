@@ -20,8 +20,15 @@ resource "vsphere_virtual_machine" "web_app_server" {
 
   clone {
     template_uuid = data.vsphere_virtual_machine.template.id
+    customize{
+    linux_options {
+        host_name = var.host_name
+        domain    = var.domain_name
+      }
+    }
   }
 }
+
 
 data "vsphere_virtual_machine" "template" {
   name          = var.template_name
