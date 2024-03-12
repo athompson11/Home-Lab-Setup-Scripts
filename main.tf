@@ -133,6 +133,6 @@ EOF
 # Create the inventory file
 resource "local_file" "inventory" {
   depends_on = [module.dns,module.concourse,module.portfolio,module.proxy,module.security_server,module.apt_server,module.zabbix]
-  content  = template_file.ansible_inventory.rendered
+  content  = data.template_file.ansible_inventory.rendered
   filename = "inventory.ini"
 }
