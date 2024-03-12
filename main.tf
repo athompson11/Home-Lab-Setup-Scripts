@@ -4,31 +4,25 @@ provider "vsphere" {
   vsphere_server       = var.vsphere_server
   allow_unverified_ssl = true
 }
-
 data "vsphere_datacenter" "datacenter" {
   name = var.vsphere_datacenter
 }
-
 data "vsphere_datastore" "datastore" {
   name          = var.vsphere_datastore
   datacenter_id = data.vsphere_datacenter.datacenter.id
 }
-
 data "vsphere_compute_cluster" "cluster" {
   name          = var.vsphere_cluster
   datacenter_id = data.vsphere_datacenter.datacenter.id
 }
-
 data "vsphere_resource_pool" "pool" {
   name          = var.resource_pool
   datacenter_id = data.vsphere_datacenter.datacenter.id
 }
-
 data "vsphere_network" "network" {
   name          = var.network_name
   datacenter_id = data.vsphere_datacenter.datacenter.id
 }
-
 module "dns" {
   source = "./modules/dns"
   vm_name = "dns_server"
@@ -41,10 +35,9 @@ module "dns" {
   network_id = data.vsphere_network.network.id
   template_name = "ubuntu-base-image"
 }
-
 module "concourse" {
   source = "./modules/concourse_ci"
-  vm_name = "concourse_host"
+  vm_name = "concourse_server"
   vm_cpu = 8
   vm_memory = 8192
   guest_id = "ubuntu64Guest"
@@ -53,4 +46,67 @@ module "concourse" {
   resource_pool_id = data.vsphere_resource_pool.pool.id
   network_id = data.vsphere_network.network.id
   template_name = "ubuntu-base-image"
+}
+module "zabbix" {
+  source = "./modules/zabbix"
+  vm_name = "zabbix_server"
+  vm_cpu = 4
+  vm_memory = 4096
+  guest_id = "ubuntu64Guest"
+  datacenter_id = data.vsphere_datacenter.datacenter.id
+  datastore_id = data.vsphere_datastore.datastore.id
+  resource_pool_id = data.vsphere_resource_pool.pool.id
+  network_id = data.vsphere_network.network.id
+  template_name = "ubuntu-base-image"
+}
+module "apt_server" {
+  source = "./modules/apt_repo"
+  vm_name = "artifactory_server"
+  vm_cpu = 4
+  vm_memory = 4096
+  guest_id = "ubuntu64Guest"
+  datacenter_id = data.vsphere_datacenter.datacenter.id
+  datastore_id = data.vsphere_datastore.datastore.id
+  resource_pool_id = data.vsphere_resource_pool.pool.id
+  network_id = data.vsphere_network.network.id
+  template_name = "ubuntu-base-image"
+}
+
+module "proxy" {
+  source = "./modules/proxy"
+  vm_name = "proxy_server"
+  vm_cpu = 4
+  vm_memory = 2048
+  guest_id = "ubuntu64Guest"
+  datacenter_id = data.vsphere_datacenter.datacenter.id
+  datastore_id = data.vsphere_datastore.datastore.id
+  resource_pool_id = data.vsphere_resource_pool.pool.id
+  network_id = data.vsphere_network.network.id
+  template_name = "webserver-base-image"
+}
+
+module "database_server" {
+  source = "./modules/database_server"
+  vm_name = "database_server"
+  vm_cpu = 4
+  vm_memory = 4096
+  guest_id = "ubuntu64Guest"
+  datacenter_id = data.vsphere_datacenter.datacenter.id
+  datastore_id = data.vsphere_datastore.datastore.id
+  resource_pool_id = data.vsphere_resource_pool.pool.id
+  network_id = data.vsphere_network.network.id
+  template_name = "ubuntu-base-image"
+}
+
+module "portfolio" {
+  source = "./modules/web_server"
+  vm_name = "portfolio_server"
+  vm_cpu = 2
+  vm_memory = 2048
+  guest_id = "ubuntu64Guest"
+  datacenter_id = data.vsphere_datacenter.datacenter.id
+  datastore_id = data.vsphere_datastore.datastore.id
+  resource_pool_id = data.vsphere_resource_pool.pool.id
+  network_id = data.vsphere_network.network.id
+  template_name = "webserver-base-image"
 }

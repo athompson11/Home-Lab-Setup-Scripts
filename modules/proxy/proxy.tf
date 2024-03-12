@@ -1,12 +1,27 @@
-# modules/proxy
 resource "vsphere_virtual_machine" "proxy_server" {
-  name             = var.proxy_server_name
-  resource_pool_id = data.vsphere_resource_pool.pool.id
-  datastore_id     = data.vsphere_datastore.datastore.id
-  num_cpus         = var.proxy_cpu_cores
-  memory           = var.proxy_memory
+  name             = var.vm_name
+  num_cpus         = var.vm_cpu
+  memory           = var.vm_memory
+  guest_id         = var.guest_id
+  datastore_id     = var.datastore_id
+  resource_pool_id = var.resource_pool_id
 
   network_interface {
-    network_id = data.vsphere_network.network.id
+    network_id = var.network_id
   }
+
+  disk {
+    label = "disk0"
+    size  = 50
+    thin_provisioned = true
+  }
+
+  clone {
+    template_uuid = data.vsphere_virtual_machine.template.id
+  }
+}
+
+data "vsphere_virtual_machine" "template" {
+  name          = var.template_name
+  datacenter_id = var.datacenter_id
 }
