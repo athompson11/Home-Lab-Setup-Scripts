@@ -1,4 +1,4 @@
-resource "vsphere_virtual_machine" "concourse_server" {
+resource "vsphere_virtual_machine" "web_app_server" {
   name             = var.vm_name
   num_cpus         = var.vm_cpu
   memory           = var.vm_memory

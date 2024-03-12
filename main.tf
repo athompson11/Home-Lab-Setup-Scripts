@@ -72,6 +72,19 @@ module "apt_server" {
   template_name = "ubuntu-base-image"
 }
 
+module "security_server" {
+  source = "./modules/apt_repo"
+  vm_name = "perry"
+  vm_cpu = 4
+  vm_memory = 4096
+  guest_id = "ubuntu64Guest"
+  datacenter_id = data.vsphere_datacenter.datacenter.id
+  datastore_id = data.vsphere_datastore.datastore.id
+  resource_pool_id = data.vsphere_resource_pool.pool.id
+  network_id = data.vsphere_network.network.id
+  template_name = "ubuntu-base-image"
+}
+
 module "proxy" {
   source = "./modules/proxy"
   vm_name = "proxy_server"
