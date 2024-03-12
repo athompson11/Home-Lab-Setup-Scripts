@@ -48,7 +48,7 @@ module "concourse" {
   template_name = "ubuntu-base-image"
 }
 module "zabbix" {
-  source = "./modules/zabbix"
+  source = "./modules/apt_repo"
   vm_name = "zabbix_server"
   vm_cpu = 4
   vm_memory = 4096
