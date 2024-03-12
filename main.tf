@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    macaddress = {
+      source = "ivoronin/macaddress"
+      version = "0.3.2"
+    }
+  }
+}
+
 provider "vsphere" {
   user                 = var.vsphere_username
   password             = var.vsphere_password
