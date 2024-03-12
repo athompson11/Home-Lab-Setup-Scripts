@@ -9,6 +9,7 @@ resource "vsphere_virtual_machine" "artifactory_server" {
   network_interface {
     network_id = var.network_id
     mac_address = var.mac_address
+    use_static_mac = true
   }
 
   disk {
