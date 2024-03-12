@@ -70,7 +70,7 @@ build {
   
   provisioner "shell" {
     inline = [
-      "echo 'ubuntu' | sudo -S rm -rf /run/systemd/netif/leases/*",
+      "echo 'ubuntu' | sudo dhclient -r",
     ]
   }
 
