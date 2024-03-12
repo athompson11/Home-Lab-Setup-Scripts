@@ -115,19 +115,19 @@ resource "template_file" "ansible_inventory" {
 depends_on = [module.dns,module.concourse,module.portfolio,module.proxy,module.security_server,module.apt_server,module.zabbix]
 template = <<EOF
 [dns_server]
-${output.dns_server_ip}
+${module.dns.dns_server_ip}
 [concourse_server]
-${output.concourse_server_ip}
+${module.concourse.concourse_server_ip}
 [zabbix_server]
-${output.zabbix_server_ip}
+${module.zabbix.zabbix_server_ip}
 [artifactory_server]
-${output.apt_server_ip}
+${module.apt_server.apt_server_ip}
 [perry]
-${output.security_server_ip}
+${module.security_server.security_server_ip}
 [proxy_server]
-${output.proxy_server_ip}
+${module.proxy.proxy_server_ip}
 [portfolio_server]
-${output.portfolio_server_ip}
+${module.portfolio.portfolio_server_ip}
 EOF
 }
 
