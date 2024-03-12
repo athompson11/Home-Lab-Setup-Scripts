@@ -1,5 +1,7 @@
 network:
-  ethernets:
-    match: *
-    dhcp4: true
   version: 2
+  ethernets:
+    all:
+      match:
+        name: "en*"
+      dhcp4: true
