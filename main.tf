@@ -111,8 +111,7 @@ module "portfolio" {
   template_name = "webserver-base-image"
 }
 
-resource "template_file" "ansible_inventory" {
-depends_on = [module.dns,module.concourse,module.portfolio,module.proxy,module.security_server,module.apt_server,module.zabbix]
+data "template_file" "ansible_inventory" {
 template = <<EOF
 [dns_server]
 ${module.dns.ip}
