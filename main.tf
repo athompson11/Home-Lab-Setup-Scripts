@@ -98,19 +98,6 @@ module "proxy" {
   template_name = "webserver-base-image"
 }
 
-module "database_server" {
-  source = "./modules/database_server"
-  vm_name = "database_server"
-  vm_cpu = 4
-  vm_memory = 4096
-  guest_id = "ubuntu64Guest"
-  datacenter_id = data.vsphere_datacenter.datacenter.id
-  datastore_id = data.vsphere_datastore.datastore.id
-  resource_pool_id = data.vsphere_resource_pool.pool.id
-  network_id = data.vsphere_network.network.id
-  template_name = "ubuntu-base-image"
-}
-
 module "portfolio" {
   source = "./modules/web_server"
   vm_name = "portfolio_server"
@@ -122,4 +109,31 @@ module "portfolio" {
   resource_pool_id = data.vsphere_resource_pool.pool.id
   network_id = data.vsphere_network.network.id
   template_name = "webserver-base-image"
+}
+
+resource "template_file" "ansible_inventory" {
+depends_on = [module.dns,module.concourse,module.portfolio,module.proxy,module.security_server,module.apt_server,module.zabbix]
+template = <<EOF
+[dns_server]
+${output.dns_server_ip}
+[concourse_server]
+${output.concourse_server_ip}
+[zabbix_server]
+${output.zabbix_server_ip}
+[artifactory_server]
+${output.apt_server_ip}
+[perry]
+${output.security_server_ip}
+[proxy_server]
+${output.proxy_server_ip}
+[portfolio_server]
+${output.portfolio_server_ip}
+EOF
+}
+
+# Create the inventory file
+resource "local_file" "inventory" {
+  depends_on = [module.dns,module.concourse,module.portfolio,module.proxy,module.security_server,module.apt_server,module.zabbix]
+  content  = template_file.ansible_inventory.rendered
+  filename = "inventory.ini"
 }
