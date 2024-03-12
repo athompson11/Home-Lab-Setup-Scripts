@@ -2,5 +2,5 @@ network:
   version: 2
   renderer: networkd
   ethernets:
-    ent192:
+    ens192:
       dhcp4: true
