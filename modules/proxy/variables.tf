@@ -42,3 +42,8 @@ variable "template_name" {
   description = "The name of the template to use for cloning"
   type        = string
 }
+
+variable "mac_address"{
+  description = "The VM's Mac Address"
+  type = string
+}

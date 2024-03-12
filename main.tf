@@ -23,12 +23,17 @@ data "vsphere_network" "network" {
   name          = var.network_name
   datacenter_id = data.vsphere_datacenter.datacenter.id
 }
+
+resource "random_id" "dns_mac" {
+  byte_length = 6
+}
 module "dns" {
   source = "./modules/dns"
   vm_name = "dns_server"
   vm_cpu = 4
   vm_memory = 4096
   guest_id = "ubuntu64Guest"
+  mac_address  = "00:00:${random_id.dns_mac.hex}"
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
@@ -41,6 +46,7 @@ module "concourse" {
   vm_cpu = 8
   vm_memory = 8192
   guest_id = "ubuntu64Guest"
+  mac_address  = "00:00:${random_id.dns_mac.hex}"
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
@@ -48,11 +54,12 @@ module "concourse" {
   template_name = "ubuntu-base-image"
 }
 module "zabbix" {
-  source = "./modules/apt_repo"
+  source = "./modules/web_app_server"
   vm_name = "zabbix_server"
   vm_cpu = 4
   vm_memory = 4096
   guest_id = "ubuntu64Guest"
+  mac_address  = "00:00:${random_id.dns_mac.hex}"
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
@@ -65,6 +72,7 @@ module "apt_server" {
   vm_cpu = 4
   vm_memory = 4096
   guest_id = "ubuntu64Guest"
+  mac_address  = "00:00:${random_id.dns_mac.hex}"
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
@@ -73,11 +81,12 @@ module "apt_server" {
 }
 
 module "security_server" {
-  source = "./modules/apt_repo"
+  source = "./modules/security_box"
   vm_name = "perry"
   vm_cpu = 4
   vm_memory = 4096
   guest_id = "ubuntu64Guest"
+  mac_address  = "00:00:${random_id.dns_mac.hex}"
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
@@ -91,6 +100,7 @@ module "proxy" {
   vm_cpu = 4
   vm_memory = 2048
   guest_id = "ubuntu64Guest"
+  mac_address  = "00:00:${random_id.dns_mac.hex}"
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id
@@ -104,6 +114,7 @@ module "portfolio" {
   vm_cpu = 2
   vm_memory = 2048
   guest_id = "ubuntu64Guest"
+  mac_address  = "00:00:${random_id.dns_mac.hex}"
   datacenter_id = data.vsphere_datacenter.datacenter.id
   datastore_id = data.vsphere_datastore.datastore.id
   resource_pool_id = data.vsphere_resource_pool.pool.id

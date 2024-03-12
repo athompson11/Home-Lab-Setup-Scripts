@@ -8,6 +8,7 @@ resource "vsphere_virtual_machine" "dns_server" {
 
   network_interface {
     network_id = var.network_id
+    mac_address = var.mac_address
   }
 
   disk {
