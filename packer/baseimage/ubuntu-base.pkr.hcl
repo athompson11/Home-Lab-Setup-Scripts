@@ -73,8 +73,8 @@ build {
   }
   provisioner "shell" {
     inline = [
-      "sudo cp /tmp/01-netcfg.yaml /etc/netplan/",
-      "sudo netplan apply"
+      "echo 'ubuntu' | sudo -S cp /tmp/01-netcfg.yaml /etc/netplan/",
+      "echo 'ubuntu' | sudo netplan apply"
     ]
   }
   provisioner "shell-local" {
