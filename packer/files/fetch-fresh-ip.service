@@ -4,7 +4,6 @@ Wants=network.target
 Before=network.target
 [Service]
 Type=oneshot
-ExecStart=/bin/bash -c "/bin/ip addr flush dev $(ip link show | awk -F ': ' '{print $2}' | awk '{print $1}' | grep ens)"
-ExecStartPost=/bin/systemctl restart systemd-networkd
+ExecStart=/bin/bash -c "/bin/ip addr flush dev $(ip link show | awk -F ': ' '{print $2}' | awk '{print $1}' | grep ens) && /bin/systemctl restart systemd-networkd"
 [Install]
 WantedBy=network-online.target
