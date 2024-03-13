@@ -67,10 +67,13 @@ build {
   sources = [
     "source.vsphere-iso.this"
   ]
-  
+  provisioner "file" {
+    source = "../files/fetch-fresh-ip.service"
+    destination = "/tmp/fetch-fresh-ip.service"
+  }
   provisioner "shell" {
     inline = [
-      "echo 'ubuntu' | sudo -S rm -f /run/systemd/netif/leases/*",
+      "echo 'ubuntu' | sudo -S cp -R /tmp/fetch-fresh-ip.service /etc/systemd/system/network-online.target.wants/",
     ]
   }
 
