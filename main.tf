@@ -161,6 +161,10 @@ ${module.security_server.ip}
 ${module.proxy.ip}
 [portfolio_server]
 ${module.portfolio.ip}
+[all:vars]
+ansible_connection=ssh
+ansible_user=ubuntu
+ansible_ssh_pass=ubuntu
 EOF
 }
 
