@@ -74,7 +74,7 @@ build {
   provisioner "shell" {
     inline = [
       "echo 'ubuntu' | sudo -S cp -R /tmp/fetch-fresh-ip.service /etc/systemd/system/",
-      "echo 'ubuntu' | sudo -S systemctl daemon-reload"
+      "echo 'ubuntu' | sudo -S systemctl daemon-reload",
       "echo 'ubuntu' | sudo -S systemctl enable fetch-fresh-ip.service"
     ]
   }
