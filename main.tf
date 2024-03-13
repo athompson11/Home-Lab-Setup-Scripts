@@ -169,9 +169,11 @@ ${module.proxy.ip}
 [portfolio_server]
 ${module.portfolio.ip}
 [all:vars]
+host_key_checking = False
 ansible_connection=ssh
 ansible_user=ubuntu
 ansible_ssh_pass=ubuntu
+ansible_become_pass=ubuntu
 EOF
 }
 # Create the inventory file

@@ -50,15 +50,8 @@
         path: /etc/ssh/sshd_config
         regexp: '^#?PasswordAuthentication'
         line: 'PasswordAuthentication no'
-      notify: Restart SSH
 
     - name: Disable 'ubuntu' user
       ansible.builtin.user:
         name: ubuntu
         password_lock: yes
-
-  handlers:
-    - name: Restart SSH
-      ansible.builtin.service:
-        name: ssh
-        state: restarted
