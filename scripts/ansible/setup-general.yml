@@ -1,0 +1,64 @@
+---
+- name: Configure servers
+  hosts: all
+  become: true
+  vars:
+    user_name: svc_admin
+    ssh_key_file: "~/.ssh/svc_admin_key.pub"
+
+  tasks:
+    - name: Generate a password for the new user
+      ansible.builtin.command: openssl rand -base64 12
+      register: generated_password
+      delegate_to: localhost
+      run_once: true
+
+    - name: Create new user with generated password
+      ansible.builtin.user:
+        name: "{{ user_name }}"
+        password: "{{ generated_password.stdout | password_hash('sha512') }}"
+        groups: sudo
+        append: yes
+      no_log: true
+
+    - name: Save password to a local file
+      lineinfile:
+        path: "{{ inventory_hostname }}.credentials"
+        line: "{{ inventory_hostname }} : {{ generated_password.stdout }}"
+        create: yes
+      delegate_to: localhost
+      run_once: true
+
+    - name: Ensure the SSH directory exists for svc_admin
+      ansible.builtin.file:
+        path: "/home/{{ user_name }}/.ssh"
+        state: directory
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: '0700'
+
+    - name: Add public key to the svc_admin user
+      ansible.builtin.copy:
+        src: "{{ ssh_key_file }}"
+        dest: "/home/{{ user_name }}/.ssh/authorized_keys"
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        mode: '0600'
+
+    - name: Disable password authentication in SSH
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PasswordAuthentication'
+        line: 'PasswordAuthentication no'
+      notify: Restart SSH
+
+    - name: Disable 'ubuntu' user
+      ansible.builtin.user:
+        name: ubuntu
+        password_lock: yes
+
+  handlers:
+    - name: Restart SSH
+      ansible.builtin.service:
+        name: ssh
+        state: restarted

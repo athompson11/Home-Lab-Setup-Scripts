@@ -145,6 +145,13 @@ module "portfolio" {
   template_name = "webserver-base-image"
 }
 
+resource "null_resource" "wait-for-ip-swap" {
+    depends_on = [module.dns,module.concourse,module.portfolio,module.proxy,module.security_server,module.apt_server,module.zabbix]
+  provisioner "local-exec" {
+    command = "sleep 30"
+  }
+}
+
 data "template_file" "ansible_inventory" {
 template = <<EOF
 [dns_server]
@@ -167,10 +174,16 @@ ansible_user=ubuntu
 ansible_ssh_pass=ubuntu
 EOF
 }
-
 # Create the inventory file
 resource "local_file" "inventory" {
-  depends_on = [module.dns,module.concourse,module.portfolio,module.proxy,module.security_server,module.apt_server,module.zabbix]
+  depends_on = [null_resource.wait-for-ip-swap]
   content  = data.template_file.ansible_inventory.rendered
   filename = "inventory.ini"
+}
+
+resource "null_resource" "ansible_setup" {
+  depends_on = [local_file.inventory]
+  provisioner "local-exec" {
+    command = "ansible-playbook -i inventory.ini scripts/ansible/setup-general.yml"
+  }
 }
