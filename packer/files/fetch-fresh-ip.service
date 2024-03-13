@@ -3,6 +3,6 @@ Description="Fetch fresh IP (new clone)"
 After=network.target
 [Service]
 Type=oneshot
-ExecStart=/usr/sbin/dhclient;/usr/sbin/dhclient -r;/usr/sbin/dhclient
+ExecStart=/bin/bash -c "/usr/sbin/dhclient;/usr/sbin/dhclient -r;/usr/sbin/dhclient"
 [Install]
 WantedBy=network-online.target
