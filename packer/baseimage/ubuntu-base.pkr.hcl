@@ -21,8 +21,8 @@ source "vsphere-iso" "this" {
   vm_name       = "ubuntu-base-image"
   guest_os_type = "ubuntu64Guest"
 
-  CPUs            = 4
-  RAM             = 4096
+  CPUs            = 8
+  RAM             = 8192
   RAM_reserve_all = true
 
   ssh_username = "ubuntu"
@@ -74,7 +74,8 @@ build {
   }
   provisioner "shell" {
     inline = [
-      "echo 'ubuntu' | sudo -S cp -R /tmp/fetch-fresh-ip.service /etc/systemd/system/network-online.target.wants/",
+      "echo 'ubuntu' | sudo -S cp -R /tmp/fetch-fresh-ip.service /etc/systemd/system/",
+      "echo 'ubuntu' | sudo -S systemctl enable fetch-fresh-ip.service"
     ]
   }
 

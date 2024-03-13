@@ -3,6 +3,6 @@ Description="Fetch fresh IP (new clone)"
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/networkctl renew $(ip link show | awk -F ': ' '{print $2}' | awk '{print $1}' | grep ens)
+ExecStart=/bin/bash -c "/usr/bin/networkctl renew $(ip link show | awk -F ': ' '{print $2}' | awk '{print $1}' | grep ens)"
 [Install]
-WantedBy=network.target
+WantedBy=network-online.target
