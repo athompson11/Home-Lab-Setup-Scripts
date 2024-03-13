@@ -148,7 +148,7 @@ module "portfolio" {
 resource "null_resource" "wait-for-ip-swap" {
     depends_on = [module.dns,module.concourse,module.portfolio,module.proxy,module.security_server,module.apt_server,module.zabbix]
   provisioner "local-exec" {
-    command = "sleep 30"
+    command = "sleep 45"
   }
 }
 
