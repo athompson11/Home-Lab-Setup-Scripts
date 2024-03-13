@@ -1,8 +1,10 @@
 [Unit]
 Description="Fetch fresh IP (new clone)"
-
+Wants=network.targets
+Before=network.target
 [Service]
 Type=oneshot
-ExecStart=/bin/bash -c "/usr/bin/networkctl renew $(ip link show | awk -F ': ' '{print $2}' | awk '{print $1}' | grep ens)"
+ExecStart=/bin/bash -c "/bin/ip addr flush dev $(ip link show | awk -F ': ' '{print $2}' | awk '{print $1}' | grep ens)"
+ExecStartPost=/bin/systemctl restart systemd-networkd
 [Install]
 WantedBy=network-online.target
